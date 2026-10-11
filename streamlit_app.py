@@ -1,34 +1,53 @@
 import streamlit as st
 
-st.set_page_config(page_title="Bot de Vendas - Trade Fácil", page_icon="🤖", layout="centered")
+st.set_page_config(page_title="Trade na Prática", page_icon="🤖")
+LINK_1 = "https://mpago.la/1mfEXkt"
+LINK_20 = "https://mpago.la/1jN2tXo"
 
-st.title("🤖 Bot de Vendas: Trade na Prática")
-st.write("Aprenda a usar robôs para vender no automático, mesmo começando do zero.")
+if "pago1" not in st.session_state: st.session_state.pago1 = False
+if "pago20" not in st.session_state: st.session_state.pago20 = False
 
-st.warning("⚠️ Aviso: Trade envolve risco. Isso é educacional, não é promessa de lucro.")
+st.title("🤖 Trade na Prática")
 
-aba1, aba2, aba3, aba4 = st.tabs(["📚 Aula 1", "⚙️ Como funciona o Bot", "💰 Estratégia de R$1", "🧪 Simulador"])
+if not st.session_state.pago1:
+    st.header("Bot de Trade por apenas R$1")
+    st.write("Aprenda a usar o bot e lucrar todo dia.")
+    st.video("https://www.youtube.com/watch?v=dQw4w9WgXcQ") # troca seu video
+    st.link_button("💳 PAGAR R$1 E COMEÇAR", LINK_1, use_container_width=True)
+    senha = st.text_input("Já pagou R$1? Digite TRADE1:")
+    if st.button("Liberar acesso de R$1"):
+        if senha.upper() == "TRADE1":
+            st.session_state.pago1 = True
+            st.rerun()
+        else:
+            st.error("Senha errada. É TRADE1")
 
-with aba1:
-    st.header("Aula 1: Por que as pessoas perdem?")
-    st.write("- Não tem estratégia\n- Emocional\n- Sem bot")
-    st.info("O bot só automatiza sua estratégia.")
+elif not st.session_state.pago20:
+    st.success("✅ Acesso de R$1 liberado!")
+    st.subheader("Aula 1 - Como usar o bot")
+    st.write("Seu conteúdo de R$1 aqui...")
+    st.subheader("Aula 2 - Estratégia R$15/dia")
+    st.write("Seu conteúdo de R$1 aqui...")
+    
+    st.divider()
+    st.header("🔥 OFERTA VIP - Quer criar um bot igual a mim?")
+    st.write("Eu te ensino a criar um bot inteligente igual a esse que responde tudo, igual o ChatGPT, e que você pode vender.")
+    st.write("**De R$97 por R$20 hoje.**")
+    st.link_button("🚀 QUERO PAGAR R$20 E APRENDER A CRIAR", LINK_20, use_container_width=True)
+    senha2 = st.text_input("Já pagou os R$20? Digite TRADE20:")
+    if st.button("Liberar Módulo VIP"):
+        if senha2.upper() == "TRADE20":
+            st.session_state.pago20 = True
+            st.rerun()
+        else:
+            st.error("Senha VIP errada. É TRADE20")
 
-with aba2:
-    st.header("Como funciona um Bot de Venda")
-    st.code("SE preço subir X% -> ENTÃO vender Y%", language="text")
-
-with aba3:
-    st.header("Sua Estratégia de R$1 - Inteligente!")
-    st.success("Estratégia de volume!")
-    preco = st.slider("Quantas pessoas compram por R$1?", 1000, 100000, 10000)
-    st.metric("Faturamento só no teste", f"R$ {preco * 1:,}")
-
-with aba4:
-    st.header("Simulador de Bot")
-    capital = st.number_input("Seu capital inicial (R$)", value=100.0)
-    lucro_desejado = st.slider("Bot vende quando lucrar (%)", 1, 10, 3)
-    if st.button("Simular venda do Bot"):
-        venda = capital * (1 + lucro_desejado/100)
-        st.balloons()
-        st.success(f"Bot vendeu! R$ {venda:.2f}")
+else:
+    st.balloons()
+    st.success("👑 VOCÊ É VIP! Acesso total liberado!")
+    st.header("Módulo VIP - Como criar seu bot inteligente")
+    st.write("Aula 1: Como criei esse site no Streamlit")
+    st.code("import streamlit as st\nst.title('Meu Bot')", language="python")
+    st.write("Aula 2: Como colocar para vender no Mercado Pago")
+    st.write("Aula 3: Como fazer o bot responder igual eu (usando OpenAI)")
+    st.write("Parabéns! Agora você pode criar e vender o seu próprio bot!")
