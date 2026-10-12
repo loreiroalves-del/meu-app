@@ -2,168 +2,102 @@ import streamlit as st
 import random
 import time
 
-st.set_page_config(page_title="Trade Academy DRAGAO", page_icon="🐉", layout="wide", initial_sidebar_state="expanded")
-
-if "pagina" not in st.session_state:
-    st.session_state.pagina = "INICIO"
-if "xp" not in st.session_state:
-    st.session_state.xp = 0
+st.set_page_config(page_title="Trade Academy - Dragão", page_icon="🐉", layout="wide", initial_sidebar_state="expanded")
 
 st.markdown("""
 <style>
 .stApp{background:#0f0707;color:#ffe9e9;}
 .hero{
     background:radial-gradient(circle at top,#ff1a1a 0%,#8b0000 45%,#1a0505 100%);
-    padding:42px 20px;border-radius:28px;text-align:center;
-    border:2px solid #ff3333;box-shadow:0 0 35px #ff000088;
+    padding:38px 20px;border-radius:24px;text-align:center;
+    border:2px solid #ff3333;box-shadow:0 0 30px #ff000066;
+    margin-bottom:20px;
 }
 .card{
-    background:#1f0f0f;padding:24px;border-radius:18px;
-    border:1px solid #5a1a1a;margin-bottom:16px;
-    line-height:2.0;font-size:15px;
+    background:#1f0f0f;padding:22px;border-radius:16px;
+    border:1px solid #5a1a1a;margin-top:8px;
+    line-height:1.9;font-size:15px;
 }
 .card-pop{
     background:linear-gradient(135deg,#3a1010 0%,#1a0808 100%);
-    border:2px solid #ff4444;padding:24px;border-radius:18px;
-    margin-bottom:16px;box-shadow:0 0 20px #ff000055;
+    border:2px solid #ff4444;padding:22px;border-radius:16px;
+    margin-top:8px;
 }
-.titulo{font-size:26px;font-weight:900;color:#ff6b6b;margin-bottom:8px;}
-.dragao{
-    background:#2a1212;border:2px dashed #ff4444;
-    padding:16px;border-radius:16px;text-align:center;margin-bottom:12px;
+.titulo{font-size:22px;font-weight:900;color:#ff6b6b;margin-bottom:10px;}
+.dragao{background:#2a1212;border:2px dashed #ff4444;padding:14px;border-radius:16px;text-align:center;margin-bottom:12px;}
+.legal{font-size:11px;opacity:0.4;text-align:center;margin-top:40px;line-height:1.6;}
+div[data-testid="stExpander"]{
+    background:linear-gradient(135deg,#cc0000,#5a0000)!important;
+    border:2px solid #ff6666!important;
+    border-radius:14px!important;
+    margin-bottom:10px!important;
 }
-.legal{font-size:11px;opacity:0.35;text-align:center;margin-top:40px;line-height:1.6;}
-/* BOTAO VERMELHO FOGO */
+div[data-testid="stExpander"] summary{
+    color:white!important;
+    font-weight:800!important;
+    font-size:16px!important;
+}
+div[data-testid="stExpander"] summary p{color:white!important;font-weight:800!important;}
 .stButton > button{
     background:linear-gradient(135deg,#ff1a1a,#8b0000)!important;
-    color:white!important;
-    border:2px solid #ff9999!important;
-    font-weight:900!important;
-    font-size:14px!important;
-    border-radius:14px!important;
-    height:68px!important;
-    box-shadow:0 4px 18px #ff000088!important;
-    white-space:pre-line!important;
-}
-.stButton > button:hover{
-    background:#ff4444!important;
-    color:black!important;
-    transform:scale(1.03);
+    color:white!important;border:2px solid #ff9999!important;
+    font-weight:900!important;height:60px!important;border-radius:12px!important;
 }
 </style>
 """, unsafe_allow_html=True)
 
-# SIDEBAR COM DRAGAO
 with st.sidebar:
-    st.markdown("""
-    <div class="dragao">
-        <div style="font-size:50px">🐉🔥</div>
-        <b>Dragão de Fogo - seu tutor</b><br>
-        <span style="font-size:13px">Grrrr! Eu cuspo fogo nos golpes e te ensino de verdade. Sem enrolação.</span>
-    </div>
-    """, unsafe_allow_html=True)
-    st.progress(min(int(st.session_state.xp),100))
-    st.caption(f"🔥 Poder de fogo: {st.session_state.xp} XP")
-    st.markdown("### 🐉 NAVEGAÇÃO DRAGÃO")
-    menu = st.radio("menu",["INICIO","CAP 1 - O que é Bitcoin","CAP 2 - Criar conta segura","CAP 3 - PIX e Carteiras","CAP 4 - Primeira compra","CAP 5 - GRID Básico","CAP 6 - GRID Avançado + Taxas","CAP 7 - Plano R$20","CAP 8 - Golpes e Riscos","CAP 10 - Criar seu app","SIMULADOR DRAGÃO"],label_visibility="collapsed")
-    mapa={"INICIO":"INICIO","CAP 1 - O que é Bitcoin":"CAP1","CAP 2 - Criar conta segura":"CAP2","CAP 3 - PIX e Carteiras":"CAP3","CAP 4 - Primeira compra":"CAP4","CAP 5 - GRID Básico":"CAP5","CAP 6 - GRID Avançado + Taxas":"CAP6","CAP 7 - Plano R$20":"CAP7","CAP 8 - Golpes e Riscos":"CAP8","CAP 10 - Criar seu app":"CAP10","SIMULADOR DRAGÃO":"SIM"}
-    if st.session_state.pagina!=mapa[menu]:
-        st.session_state.pagina=mapa[menu];st.rerun()
-    st.markdown('<div class="card"><b>🐉 Dragão fala:</b><br><span style="font-size:13px">GRID ganha quando fica quicando lateral. Fica preso quando dispara ou desaba. Por isso teste com pouco.</span></div>', unsafe_allow_html=True)
-    st.markdown('<div class="card" style="font-size:11px;opacity:0.7">Conteúdo educacional Lei 9.394/96. Não é recomendação investimento. Alto risco. Sem corretora específica.</div>', unsafe_allow_html=True)
+    st.markdown('<div class="dragao"><div style="font-size:44px">🐉</div><b>Academy Dragão</b><br><span style="font-size:13px">Do zero ao primeiro trade com segurança.</span></div>', unsafe_allow_html=True)
+    st.markdown('<div class="card"><b>🐉 O que você vai aprender</b><br><span style="font-size:13px">Bitcoin, conta segura, PIX, primeira compra, GRID, taxas, plano R$20 e como evitar golpes.</span></div>', unsafe_allow_html=True)
+    st.markdown('<div class="card" style="font-size:11px;opacity:0.7">Conteúdo educacional - Lei 9.394/96<br>Não é recomendação de investimento<br>Criptoativo é renda variável de alto risco</div>', unsafe_allow_html=True)
 
-# HERO VERMELHO
 st.markdown("""
 <div class="hero">
-<h1>🐉🔥 TRADE ACADEMY DRAGÃO</h1>
-<p><b>Versão Fogo - Conteúdo completo que já aparece embaixo, sem precisar rolar</b></p>
+<h1>🐉 TRADE ACADEMY</h1>
+<p><b>Do zero ao seu primeiro trade com R$20. Método prático, sem promessa de dinheiro fácil.</b><br>Aprenda com segurança, entenda taxas e riscos reais antes de começar.</p>
 </div>
 """, unsafe_allow_html=True)
 
-st.write("")
+with st.expander("CAP 1 - O que é Bitcoin", expanded=True):
+    st.markdown('<div class="card-pop"><div class="titulo">O que é Bitcoin</div>Criado em 2008 após a crise dos bancos. Proposta: um dinheiro que nenhum governo pode imprimir à vontade.<br><br><b>Por que tem valor?</b> Porque milhões de pessoas aceitam e só existirão 21 milhões de unidades. Escassez programada.<br><br><b>Blockchain:</b> Um livro-caixa público copiado em milhares de computadores. Se alguém tenta fraudar, os demais recusam.<br><br><b>Volatilidade:</b> Por ser escasso e global, o preço varia forte. Pode cair 15% e subir 20% no mesmo dia.<br><br><b>Comece pelo básico:</b> BTC e ETH são os mais antigos e negociados. Moedas novas prometendo 1000% em dias têm risco altíssimo de golpe.</div>', unsafe_allow_html=True)
 
-# BOTOES VERMELHOS
-c1,c2,c3,c4,c5=st.columns(5)
-with c1:
-    if st.button("CAP 1\nO que é BTC",use_container_width=True): st.session_state.pagina="CAP1";st.rerun()
-with c2:
-    if st.button("CAP 2\nConta segura",use_container_width=True): st.session_state.pagina="CAP2";st.rerun()
-with c3:
-    if st.button("CAP 3\nPIX",use_container_width=True): st.session_state.pagina="CAP3";st.rerun()
-with c4:
-    if st.button("CAP 4\n1a compra",use_container_width=True): st.session_state.pagina="CAP4";st.rerun()
-with c5:
-    if st.button("🐉 SIMULADOR\nFOGO",use_container_width=True): st.session_state.pagina="SIM";st.rerun()
-c6,c7,c8,c9,c10=st.columns(5)
-with c6:
-    if st.button("CAP 5\nGRID básico",use_container_width=True): st.session_state.pagina="CAP5";st.rerun()
-with c7:
-    if st.button("CAP 6\nAvançado",use_container_width=True): st.session_state.pagina="CAP6";st.rerun()
-with c8:
-    if st.button("CAP 7\nPlano R$20",use_container_width=True): st.session_state.pagina="CAP7";st.rerun()
-with c9:
-    if st.button("CAP 8\nGolpes",use_container_width=True): st.session_state.pagina="CAP8";st.rerun()
-with c10:
-    if st.button("CAP 10\nCriar app",use_container_width=True): st.session_state.pagina="CAP10";st.rerun()
+with st.expander("CAP 2 - Como criar conta segura"):
+    st.markdown('<div class="card"><div class="titulo">Conta segura</div><b>1.</b> Escolha uma corretora grande e regulamentada. Confira o domínio oficial e o cadeado https. Nunca use links de Telegram.<br><b>2.</b> Cadastro: e-mail + senha forte (12+ caracteres).<br><b>3.</b> Validação por e-mail.<br><b>4.</b> KYC: foto do documento legível, sem flash, dados iguais ao RG.<br><b>5.</b> Selfie com documento e papel com data.<br><b>6.</b> Ative autenticação em 2 fatores (2FA) no app autenticador e guarde o código de recuperação em papel.<br><br>Corretora séria nunca pede senha ou código 2FA por mensagem.</div>', unsafe_allow_html=True)
 
-st.divider()
-pag=st.session_state.pagina
+with st.expander("CAP 3 - PIX e Carteiras"):
+    st.markdown('<div class="card"><div class="titulo">Onde fica seu dinheiro</div><b>Carteira Spot:</b> Bolso principal onde ficam seus ativos após compra.<br><b>Carteira de Depósito:</b> Onde o PIX cai primeiro. Depois você transfere para Spot.<br><br><b>Fluxo de depósito:</b> Carteira > Depositar > BRL > PIX > copie a chave > faça PIX de R$10 de teste no seu banco > aguarde 1 a 3 min > Transfira para Spot.<br><br>O CPF do banco deve ser igual ao da corretora.</div>', unsafe_allow_html=True)
 
-if pag=="INICIO":
-    st.markdown('<div class="card-pop"><div class="titulo">🐉🔥 Bem vindo ao Trade Academy Dragão</div>Curso prático com tema fogo vermelho.<br><br>✅ Já abre conteúdo embaixo do título, não precisa rolar até fim<br>✅ Dragão tutor na lateral (clica >> no canto superior esquerdo no celular)<br>✅ Sem nome de corretora, sem risco<br>✅ Simulador que explica GRADE, RANGE, TAXA, LÍQUIDO<br><br>Clica nos botões vermelhos acima pra começar. Cada CAP dá XP de fogo.</div>', unsafe_allow_html=True)
+with st.expander("CAP 4 - Primeira compra com R$10"):
+    st.markdown('<div class="card"><div class="titulo">Primeira compra</div>Trade > Spot > par BTC/BRL > ordem a Mercado > valor R$10 > Comprar.<br><br>Você verá frações de BTC na carteira Spot. Bitcoin é divisível em 8 casas decimais, não precisa comprar 1 inteiro.<br><br>Exercício: anote preço, taxa e valor por 3 dias. Isso treina emocional sem risco alto.</div>', unsafe_allow_html=True)
 
-elif pag=="CAP1":
-    st.markdown('<div class="titulo">🐉 CAP 1 - O que é Bitcoin de verdade</div>', unsafe_allow_html=True)
-    st.markdown('<div class="card">2008 crise bancos, governo imprimiu trilhões. Nasce Bitcoin: dinheiro que ninguém pode imprimir à vontade.<br><br>Dinheiro é confiança. Real vale porque Brasil aceita. BTC vale porque milhões no mundo aceitam e só existe 21 milhões.<br><br>Blockchain: caderno público copiado em 20 mil PCs. Se um tenta mentir, outros 19.999 negam.<br><br>Volátil: cai 15% sobe 20% no dia. Quebra emocional.<br><br>Foca BTC e ETH início porque antigos, menos golpe. Moedinha nova prometendo 1000% = 99% golpe.<br><br>🐉 Ouro digital escasso. Dragão guarda, não deixa imprimir mais.</div>', unsafe_allow_html=True)
+with st.expander("CAP 5 - Estratégia GRID"):
+    st.markdown('<div class="card-pop"><div class="titulo">O que é GRID</div>GRID automatiza compra na baixa e venda na alta dentro de um intervalo que você define.<br><br>Exemplo: configura para comprar a R$299.000 e vender a R$300.000. Cria várias ordens entre esses preços e opera sozinho.<br><br><b>Quando funciona melhor?</b> Mercado lateral, indo e voltando no mesmo intervalo.<br><b>Quando fica preso?</b> Se sobe muito e sai por cima, você vende tudo e perde a alta. Se cai muito e sai por baixo, fica com o ativo desvalorizado aguardando recuperação.</div>', unsafe_allow_html=True)
 
-elif pag=="CAP2":
-    st.markdown('<div class="titulo">🐉 CAP 2 - Criar conta segura (SEM MARCA)</div>', unsafe_allow_html=True)
-    st.markdown('<div class="card">1. Escolhe corretora grande regulamentada, confere https domínio oficial, nunca link Telegram.<br>2. E-mail + senha 12 caracteres com maiúscula número símbolo.<br>3. Código e-mail.<br>4. KYC nome igual RG foto sem flash.<br>5. Selfie com RG + papel nome corretora + data.<br>6. Ativa 2FA Google Authenticator guarda código em PAPEL.<br><br>🐉 Dragão: Corretora séria NUNCA pede senha ou 2FA. Se pedir é golpe, cospe fogo e bloqueia.</div>', unsafe_allow_html=True)
+with st.expander("CAP 6 - Taxas e Configuração"):
+    st.markdown('<div class="card"><div class="titulo">Taxas</div>Taxa média: 0,1% por operação. Compra de R$10 = R$0,01. Venda de R$10 = R$0,01. Ciclo completo = R$0,02.<br><br>Exemplo: 20 ciclos = R$0,40 de taxa. Se lucro bruto de R$0,04 x 20 = R$0,80, líquido = R$0,40.<br><br><b>Configuração de aprendizado com R$20:</b> Intervalo -4% a +4%, 8 a 10 grades, R$2 por grade, modo aritmético.<br><br>Caminho genérico: Bots > Spot Grid > Criar > definir inferior, superior, grades e valor total.</div>', unsafe_allow_html=True)
 
-elif pag=="CAP3":
-    st.markdown('<div class="titulo">🐉 CAP 3 - PIX e Carteiras</div>', unsafe_allow_html=True)
-    st.markdown('<div class="card">Spot = bolso principal seguro. Carteira depósito = onde cai PIX depois transfere Spot.<br><br>PIX genérico: Corretora > Depositar > BRL > PIX > copia chave > seu banco PIX R$10 teste > 1-3 min cai > Transferir pra Spot.<br><br>CPF banco = CPF corretora mesmo titular.<br><br>🐉 R$10 teste pra ver se cai certo, sem queimar dinheiro.</div>', unsafe_allow_html=True)
+with st.expander("CAP 7 - Plano 7 dias com R$20"):
+    st.markdown('<div class="card-pop"><div class="titulo">Plano prático</div>Matemática real: R$20 dividido em 10 grades = R$2 cada. 8 ciclos x R$0,04 = R$0,32/dia em cenário lateral.<br><br><b>Dia 1:</b> Criar conta e 2FA<br><b>Dia 2:</b> Entender PIX e testar simulador<br><b>Dia 3:</b> Depósito de R$20 e compra de R$10<br><b>Dia 4:</b> Criar GRID com R$10<br><b>Dia 5:</b> Analisar taxas e operações<br><b>Dia 6:</b> Decidir se adiciona mais R$10<br><b>Dia 7:</b> Registrar aprendizados<br><br>Use apenas valores que não comprometem suas contas.</div>', unsafe_allow_html=True)
 
-elif pag=="CAP4":
-    st.markdown('<div class="titulo">🐉 CAP 4 - Primeira compra</div>', unsafe_allow_html=True)
-    st.markdown('<div class="card">Trade > Spot > BTC/BRL > Mercado > Total 10 > Comprar. Ver fração em Spot. Deixa quieto olha 3h em 3h anota caderno. Primeira compra é pra perder medo. R$10 é aula paga. Não compra moeda que subiu 80% hoje (FOMO).<br><br>🐉 Primeira labareda é pra aprender, não pra queimar tudo.</div>', unsafe_allow_html=True)
+with st.expander("CAP 8 - Golpes e Riscos Reais"):
+    st.markdown('<div class="card"><div class="titulo">O que evitar</div><b>1.</b> Dobrar Bitcoin por WhatsApp.<br><b>2.</b> Prints de lucro sem mostrar perdas.<br><b>3.</b> Achar que GRID é renda fixa - cai 30% acontece e fica preso.<br><b>4.</b> Futures / Margem / Alavancagem 125x - liquida em segundos. Fique no Spot.<br><b>5.</b> Emprestar conta com seu CPF.<br><b>6.</b> Operar ansioso.<br><br>Imposto: vendas acima de R$35 mil/mês têm tributação. Guarde comprovantes.</div>', unsafe_allow_html=True)
 
-elif pag=="CAP5":
-    st.markdown('<div class="titulo">🐉 CAP 5 - GRID Básico - Feira automática</div>', unsafe_allow_html=True)
-    st.markdown('<div class="card-pop">Feira: maçã R$5 compra R$4,90 vende R$5,10 lucro R$0,20 faz 50x=R$10. GRID faz com BTC automático.<br><br>Você fala: compra 299k vende 300k. Cria ordens entre e trabalha sozinho.<br><br>Ganha lateral quicando. Perde se sobe forte sai por cima (vende tudo perde alta) ou cai forte sai por baixo (compra tudo fica preso no preju até voltar meses).<br><br>🐉 Dragão ganha pouco sempre, não fica rico rápido. Quem promete 10% ao dia mente.</div>', unsafe_allow_html=True)
+with st.expander("CAP 10 - Como criar seu próprio app"):
+    st.markdown('<div class="card-pop"><div class="titulo">Bônus</div>Este app foi feito com Streamlit + GitHub + Streamlit Cloud (gratuito).<br><br>Você pode replicar para seu nicho, trocando textos. Para vender, crie link de pagamento de R$20 em gateway como Mercado Pago.<br><br>Aviso obrigatório: Conteúdo educacional. Não é recomendação de investimento. Criptoativo é de alto risco. Não indicamos corretora específica.</div>', unsafe_allow_html=True)
 
-elif pag=="CAP6":
-    st.markdown('<div class="titulo">🐉 CAP 6 - Avançado + Taxas</div>', unsafe_allow_html=True)
-    st.markdown('<div class="card">Config R$20: inferior -4% superior +4% 8-10 grades R$2 por grade aritmético.<br><br>TAXA média 0,1% cada operação. Compra R$10 paga R$0,01 vende R$0,01 total R$0,02. 20 ciclos=R$0,40 taxa. Lucro R$0,04x20=R$0,80 bruto -0,40=0,40 líquido. Grade muito pequena taxa come tudo.<br><br>Genérico: Bots > Spot Grid > Criar > inferior 288k superior 312k 10 grades R$20<br><br>🐉 Dragão: Lucro sem taxa é mentira. Fogo consome taxa sempre.</div>', unsafe_allow_html=True)
-
-elif pag=="CAP7":
-    st.markdown('<div class="titulo">🐉 CAP 7 - Plano 7 dias R$20</div>', unsafe_allow_html=True)
-    st.markdown('<div class="card-pop">R$20/10=R$2 grade R$0,04x8=R$0,32 dia ~R$9,60 mês lateral perfeito. Não é R$200.<br><br>Dia1 conta 2FA Dia2 entende PIX sem depositar roda simulador Dia3 deposita R$20 compra R$10 BTC Dia4 GRID R$10 -3%+3% 5 grades Dia5 olha taxas Dia6 decide mais R$10 ou para Dia7 anota.<br><br>REGRA: nunca dinheiro aluguel comida emprestado. Só que se perder não te quebra.<br><br>🐉 R$20 é primeira chama, não incêndio.</div>', unsafe_allow_html=True)
-
-elif pag=="CAP8":
-    st.markdown('<div class="titulo">🐉 CAP 8 - Golpes e Riscos Reais</div>', unsafe_allow_html=True)
-    st.markdown('<div class="card">1 Dobrar BTC WhatsApp GOLPE 2 Print lucro falso esconde perda 3 GRID não mágico cai 30% fica preso meses 4 FUTURES 125x liquida 2s NÃO CLICA fica SPOT 5 Anota caderno físico 6 Ansioso desliga app 7 Imposto acima R$35k mês 15% 8 Não empresta conta CPF seu.<br><br>🐉🔥 Se é bom demais pra ser verdade, dragão cospe fogo e queima. É golpe.</div>', unsafe_allow_html=True)
-
-elif pag=="CAP10":
-    st.markdown('<div class="titulo">🐉 CAP 10 - BÔNUS Criar seu app e vender R$20</div>', unsafe_allow_html=True)
-    st.markdown('<div class="card-pop">Streamlit+GitHub+Cloud grátis. Copia código troca textos seu nicho. Cobrar: Mercado Pago Kiwify R$20 PIX verifica e-mail via API ou manual. Divulga TikTok mostrando simulador R$7,81 explicando GRADE TAXA.<br><br>Obrigatório aviso: Conteúdo educacional Lei 9.394/96. Não é recomendação investimento, não é promessa rentabilidade. Cripto alto risco pode perder tudo. Não indicamos corretora específica.<br><br>🐉 Vende conhecimento não promessa. Promessa dá processo e dragão te queima.</div>', unsafe_allow_html=True)
-
-elif pag=="SIM":
-    st.markdown('<div class="titulo">🐉🔥 SIMULADOR DRAGÃO QUE ENSINA</div>', unsafe_allow_html=True)
-    st.markdown('<div class="card-pop">Simulador refeito: já mostra tudo embaixo, explica cada termo com fogo.</div>', unsafe_allow_html=True)
-    inv=st.slider("Valor fictício (mentira) 🔥",5.0,50.0,7.81)
-    grades=st.slider("Grades (garras do dragão) 🐉",4,20,8)
-    st.markdown(f'<div class="card"><b>📖 Glossário Dragão:</b><br><b>GRADE:</b> divisão dinheiro R${inv:.2f}/{grades}=R${inv/grades:.2f} cada - cada garra compra e vende<br><b>RANGE:</b> intervalo que dragão vigia 288k-312k<br><b>TAXA:</b> ~0,1% fogo que corretora queima cada operação<br><b>LÍQUIDO:</b> bruto - taxas - o que sobra pro dragão<br><b>LATERAL:</b> indo e voltando melhor pro GRID<br><b>PRESO:</b> caiu muito comprou tudo ficou prejuízo</div>', unsafe_allow_html=True)
-    if st.button("🔥🐉 RODAR FOGO DO DRAGÃO - CLICA",type="primary",use_container_width=True):
-        barra=st.progress(0); lt=0; tt=0
+with st.expander("🐉 SIMULADOR DRAGÃO - Teste prático"):
+    st.markdown('<div class="card-pop"><div class="titulo">Simulador</div>Teste fictício para entender mecânica de grade, taxa e lucro líquido.</div>', unsafe_allow_html=True)
+    inv=st.slider("Valor fictício",5.0,50.0,20.0)
+    grades=st.slider("Grades",4,20,8)
+    st.caption(f"Cada grade: R$ {inv/grades:.2f} | Range exemplo: 288k a 312k | Taxa: 0,1% por operação")
+    if st.button("Rodar simulação",type="primary",use_container_width=True):
+        lt=0; tt=0
         for i in range(grades):
             pc=random.uniform(288000,299500); pv=pc*random.uniform(1.002,1.008)
             lb=(inv/grades)*(pv/pc-1); taxa=(inv/grades)*0.001*2; ll=lb-taxa
-            lt+=ll; tt+=taxa; barra.progress(int((i+1)/grades*100))
-            st.write(f"🔥 GARRA {i+1}: Dragão comprou R$ {pc:,.0f} (FUNDO) -> Cuspiu fogo e vendeu R$ {pv:,.0f} (TOPO) | Bruto R$ {lb:.4f} - Taxa queimada R$ {taxa:.4f} = Líquido R$ {ll:.4f} | Se caísse pra 250k dragão ficaria PRESO na caverna.")
-            time.sleep(0.15)
-        st.balloons()
-        st.success(f"🐉🔥 FOGO FINAL: Bruto R$ {lt+tt:.2f} - Taxas queimadas R$ {tt:.2f} = Líquido R$ {lt:.2f}")
-        st.markdown('<div class="card-pop">🐉 Dragão explica: Cada garra comprou barato fundo vendeu caro topo. Taxa queimou parte. Se RANGE rompido pra 350k vendia tudo e perdia alta. Se fosse pra 250k ficava preso na caverna meses. Não é garantia lucro real, é aula de fogo.</div>', unsafe_allow_html=True)
-
-st.markdown('<div class="legal">🐉🔥 Trade Academy DRAGÃO - Vermelho fogo. Conteúdo educacional Lei 9.394/96. Não é recomendação investimento. Alto risco pode perder tudo. Sem marca. Sem promessa.</div>', unsafe_allow_html=True)
+            lt+=ll; tt+=taxa
+            st.write(f"Grade {i+1}: Compra R$ {pc:,.0f} → Venda R$ {pv:,.0f} | Bruto R$ {lb:.4f} - Taxa R$ {taxa:.4f} = Líquido R$ {ll:.4f}")
+            time.sleep(0.12)
+        st.success(f"Resultado: Bruto R$ {lt+tt:.2f} - Taxas R$ {tt:.2f} = Líquido R$ {lt:.2f} | Em cenário real, rompimento do intervalo pode deixar posição presa.")
+        
+st.markdown('<div class="legal">🐉 Trade Academy - Conteúdo educacional nos termos da Lei 9.394/96.<br>Não é recomendação de investimento. Criptoativo é renda variável de alto risco e você pode perder todo capital.<br>Não indicamos corretora específica. Não há promessa de rentabilidade.</div>', unsafe_allow_html=True)
