@@ -1,4 +1,4 @@
- import streamlit as st, random, time
+import streamlit as st, random, time
 
 st.set_page_config(page_title="Trade Academy", page_icon="💜", layout="wide")
 
